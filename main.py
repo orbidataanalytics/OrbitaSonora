@@ -4,11 +4,10 @@ import time
 
 app = FastAPI(
     title="Órbita Sonora API",
-    description="Backend oficial de Órbita Sonora / ORBIDATA con telemetría satelital GOES-16",
+    description="Backend oficial de Órbita Sonora / ORBIDATA",
     version="1.0.0"
 )
 
-# Permitir solicitudes desde GitHub Pages
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,6 +23,7 @@ def home():
         "sistema": "Órbita Sonora API"
     }
 
+# Endpoint que sirve el catálogo oficial a la rocola
 @app.get("/api/datos")
 def obtener_datos():
     return {
@@ -34,18 +34,38 @@ def obtener_datos():
         "origen": "NOAA / NASA Open Data",
         "album": "TRON: Legacy OST",
         "autores": "Daft Punk",
-        "genero": "Electronic / Synthwave / Cyberpunk"
+        "genero": "Electronic / Synthwave / Cyberpunk",
+        "catalogo": [
+            {
+                "id": 1,
+                "titulo": "End Of Line",
+                "album": "TRON: Legacy OST",
+                "autores": "Daft Punk",
+                "genero": "Electronic / Cyberpunk"
+            },
+            {
+                "id": 2,
+                "titulo": "Derezzed",
+                "album": "TRON: Legacy OST",
+                "autores": "Daft Punk",
+                "genero": "Electro House / Synthwave"
+            },
+            {
+                "id": 3,
+                "titulo": "The Son Of Flynn",
+                "album": "TRON: Legacy OST",
+                "autores": "Daft Punk",
+                "genero": "Ambient Synth / Electronic"
+            }
+        ]
     }
 
-# Endpoint para la telemetría del satélite GOES-16 sin cortes
 @app.get("/api/goes")
 def obtener_goes():
     timestamp = int(time.time())
     return {
         "satelite": "GOES-16 (GOES-East)",
         "coordenadas": "75.2° W (Centrado en Suramérica)",
-        "tipo_captura": "GeoColor Full Disk (Color Real / Infrarrojo)",
-        "proveedor": "NOAA / NESDIS",
-        "timestamp": timestamp,
+        "tipo_captura": "GeoColor Full Disk",
         "image_url": f"https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t={timestamp}"
     }
