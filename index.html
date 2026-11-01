@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órbita Sonora | ORBIDATA</title>
+    <!-- Fuentes: Orbitron, Pacifico, Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -18,6 +19,7 @@
             color: #ffffff;
             min-height: 100vh;
             background-color: #03050a;
+            /* Fondo satelital GOES-16 centrado en Suramérica */
             background-image: radial-gradient(circle at center, rgba(10, 15, 30, 0.25) 0%, rgba(3, 5, 10, 0.88) 100%),
                         url('https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg');
             background-repeat: no-repeat;
@@ -33,6 +35,7 @@
             transition: background-image 1.2s ease-in-out;
         }
 
+        /* LOGO ORBIDATA */
         header {
             width: 100%;
             padding: 25px 40px;
@@ -64,6 +67,7 @@
             color: #00f0ff;
         }
 
+        /* ESTRUCTURA PRINCIPAL */
         main {
             display: flex;
             flex-direction: column;
@@ -87,10 +91,11 @@
             margin-bottom: 25px;
         }
 
+        /* ROCOLA VINTAGE JUKEBOX */
         .jukebox-container {
             position: relative;
             width: 350px;
-            min-height: 560px;
+            min-height: 570px;
             background: linear-gradient(145deg, rgba(43, 9, 56, 0.95), rgba(18, 3, 28, 0.95));
             border-radius: 175px 175px 20px 20px;
             border: 6px solid #ffd700;
@@ -166,9 +171,10 @@
             border-radius: 50%;
         }
 
+        /* PANTALLA DIGITAL */
         .jukebox-display {
             width: 290px;
-            min-height: 110px;
+            min-height: 115px;
             background: #08101d;
             border: 2px solid #00f0ff;
             border-radius: 8px;
@@ -206,6 +212,7 @@
             color: #a5f3fc;
         }
 
+        /* BARRA DE PROGRESO */
         .progress-container {
             margin-top: 6px;
             display: flex;
@@ -221,6 +228,7 @@
 
         .seek-slider {
             -webkit-appearance: none;
+            appearance: none;
             width: 100%;
             height: 5px;
             border-radius: 5px;
@@ -249,7 +257,7 @@
 
         .jukebox-speaker {
             width: 290px;
-            height: 70px;
+            height: 65px;
             margin-top: 10px;
             background: repeating-linear-gradient(
                 0deg,
@@ -277,6 +285,7 @@
             border: 1px solid #ffd700;
         }
 
+        /* PANEL DESPLEGABLE DE CANCIONES (Botón Azul) */
         .playlist-panel {
             display: none;
             width: 290px;
@@ -314,6 +323,7 @@
             border-left: 3px solid #00f0ff;
         }
 
+        /* BOTONES INTERACTIVOS (RGB) */
         .jukebox-buttons {
             display: flex;
             gap: 15px;
@@ -425,6 +435,7 @@
                 <div class="vinyl-center"></div>
             </div>
 
+            <!-- Display Digital de la Rocola -->
             <div class="jukebox-display" id="display-screen">
                 <div class="display-line display-title" id="track-title">🎵 Pista: End Of Line</div>
                 <div class="display-line display-genre" id="track-genre">🎷 Género: Electronic / Cyberpunk</div>
@@ -438,6 +449,7 @@
                 </div>
             </div>
 
+            <!-- Panel Lista Desplegable (Activado con Botón Azul) -->
             <div class="playlist-panel" id="playlist-panel">
                 <div class="playlist-item selected" onclick="seleccionarItem(0)" ondblclick="reproducirPistaDirecta(0)">1. End Of Line - Daft Punk</div>
                 <div class="playlist-item" onclick="seleccionarItem(1)" ondblclick="reproducirPistaDirecta(1)">2. Derezzed - Daft Punk</div>
@@ -448,6 +460,7 @@
                 <span class="jukebox-title-badge">TRON Legacy</span>
             </div>
 
+            <!-- Botones RGB (🔴 API, 🟢 Play/Pause, 🔵 Lista) -->
             <div class="jukebox-buttons">
                 <button class="btn-retro btn-red" onclick="conectarAPI()" title="🔴 Rojo: Conectar FastAPI en Render">📡</button>
                 <button class="btn-retro btn-green" onclick="togglePlay()" title="🟢 Verde: Reproducir Canción Seleccionada">▶</button>
@@ -456,8 +469,8 @@
         </div>
     </main>
 
-    <!-- Reproductor HTML5 Nativo (Audio Directo sin bloqueos de iframe) -->
-    <audio id="audio-player" preload="metadata"></audio>
+    <!-- Elemento Audio con cabecera CORS abierta -->
+    <audio id="audio-player" crossorigin="anonymous" preload="auto"></audio>
 
     <div class="nasa-fixed-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" alt="NASA Logo">
@@ -469,40 +482,45 @@
     </div>
 
     <script>
-        // Fuentes directas de audio espacial/synth (Daft Punk TRON / Audio espacial)
+        // Fuentes CDN con políticas CORS libres
         const playlist = [
             {
-                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Voyager_Plasma_Waves.mp3",
+                url: "https://upload.wikimedia.org/wikipedia/commons/b/b5/Radio_waves_from_space_sound.ogg",
                 titulo: "End Of Line",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
-                genero: "Electronic / Cyberpunk"
+                genero: "Electronic / Cyberpunk",
+                freq: 110
             },
             {
-                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Kepler_Star_KIC11771022.mp3",
+                url: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg",
                 titulo: "Derezzed",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
-                genero: "Electro House / Synthwave"
+                genero: "Electro House / Synthwave",
+                freq: 146
             },
             {
-                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Jupiter_Ganymede_Sounds.mp3",
+                url: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Sound_effect_synthesizer.ogg",
                 titulo: "The Son Of Flynn",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
-                genero: "Ambient Synth / Electronic"
+                genero: "Ambient Synth / Electronic",
+                freq: 98
             }
         ];
 
         let pistaSeleccionada = 0;
         let pistaCargada = -1;
+        let isWebAudioPlaying = false;
+        let audioCtx = null;
+        let synthInterval = null;
 
         const audio = document.getElementById('audio-player');
         const vinyl = document.getElementById('vinyl');
         const seekBar = document.getElementById('seek-bar');
         const timeDisplay = document.getElementById('time-display');
 
-        // Formato min:seg (00:00)
         function formatearTiempo(segundos) {
             if (isNaN(segundos) || segundos < 0) return "00:00";
             const min = Math.floor(segundos / 60);
@@ -510,9 +528,9 @@
             return `${min < 10 ? '0' : ''}${min}:${seg < 10 ? '0' : ''}${seg}`;
         }
 
-        // Actualización fluida de la barra de progreso
+        // Actualización de progreso
         audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
+            if (audio.duration && !isWebAudioPlaying) {
                 const porcentaje = (audio.currentTime / audio.duration) * 100;
                 seekBar.value = porcentaje;
                 timeDisplay.innerText = `${formatearTiempo(audio.currentTime)} / ${formatearTiempo(audio.duration)}`;
@@ -525,7 +543,7 @@
         });
 
         function cambiarTiempo(valorPorcentaje) {
-            if (audio.duration) {
+            if (audio.duration && !isWebAudioPlaying) {
                 audio.currentTime = (valorPorcentaje / 100) * audio.duration;
             }
         }
@@ -555,28 +573,102 @@
             actualizarPantalla();
         }
 
-        // Doble Clic o Botón Verde: Reproducir inmediatamente
+        // MOTOR SINTETIZADOR DE RESPALDO (Garantiza sonido incluso en fallos de red)
+        function iniciarSintetizadorWebAudio(index) {
+            detenerSintetizador();
+            isWebAudioPlaying = true;
+            vinyl.classList.add('playing');
+
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            
+            const baseFreq = playlist[index].freq || 110;
+            let step = 0;
+            let segundosSimulados = 0;
+
+            synthInterval = setInterval(() => {
+                if (!audioCtx || audioCtx.state === 'closed') return;
+                
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                // Arpegio Synthwave TRON
+                const notas = [0, 3, 7, 10, 12, 7, 3, 0];
+                const freq = baseFreq * Math.pow(2, notas[step % notas.length] / 12);
+                
+                osc.type = (step % 2 === 0) ? 'sawtooth' : 'square';
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+
+                step++;
+                if (step % 4 === 0) segundosSimulados++;
+                
+                seekBar.value = (segundosSimulados % 60) * (100 / 60);
+                timeDisplay.innerText = `${formatearTiempo(segundosSimulados)} / 03:30 (Synth Directo)`;
+            }, 250);
+
+            document.getElementById('track-title').innerText = `▶ ${playlist[index].titulo} (Synthwave Live)`;
+        }
+
+        function detenerSintetizador() {
+            if (synthInterval) clearInterval(synthInterval);
+            if (audioCtx) {
+                audioCtx.close();
+                audioCtx = null;
+            }
+            isWebAudioPlaying = false;
+        }
+
+        // Doble Clic o Botón Verde: Reproducción Directa
         function reproducirPistaDirecta(index) {
+            detenerSintetizador();
             pistaSeleccionada = index;
             pistaCargada = index;
             actualizarPantalla();
+
+            document.getElementById('track-title').innerText = `🔄 Cargando: ${playlist[index].titulo}...`;
             
             audio.src = playlist[index].url;
-            audio.play().then(() => {
-                vinyl.classList.add('playing');
-            }).catch((e) => {
-                console.log("Error de reproducción nativa:", e);
-            });
+            audio.load();
+
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    vinyl.classList.add('playing');
+                    actualizarPantalla();
+                }).catch(err => {
+                    // Si el servidor MP3 o el navegador bloquean el stream, activa el sintetizador de respaldo
+                    console.warn("Stream MP3 bloqueado. Activando Sintetizador WebAudio:", err);
+                    iniciarSintetizadorWebAudio(index);
+                });
+            }
         }
 
-        // 🟢 BOTÓN VERDE: Play / Pause de la pista seleccionada
+        // 🟢 BOTÓN VERDE: Play / Pause
         function togglePlay() {
+            if (isWebAudioPlaying) {
+                detenerSintetizador();
+                vinyl.classList.remove('playing');
+                actualizarPantalla();
+                return;
+            }
+
             if (pistaCargada !== pistaSeleccionada) {
                 reproducirPistaDirecta(pistaSeleccionada);
             } else {
                 if (audio.paused) {
                     audio.play().then(() => {
                         vinyl.classList.add('playing');
+                    }).catch(() => {
+                        iniciarSintetizadorWebAudio(pistaSeleccionada);
                     });
                 } else {
                     audio.pause();
@@ -585,7 +677,7 @@
             }
         }
 
-        // 🔴 BOTÓN ROJO: Conectar a FastAPI en Render
+        // 🔴 BOTÓN ROJO: Conectar con FastAPI Render
         async function conectarAPI() {
             document.getElementById('track-title').innerText = "⚡ Conectando a FastAPI...";
             const RENDER_URL = 'https://orbita-sonora.onrender.com/api/datos';
@@ -596,8 +688,8 @@
                 
                 const data = await response.json();
                 document.getElementById('track-title').innerText = `📡 API: ${data.planeta}`;
-                document.getElementById('track-genre').innerText = `🎷 Género: ${data.genero}`;
-                document.getElementById('track-author').innerText = `👤 Autores: ${data.autores}`;
+                document.getElementById('track-genre').innerText = `🎷 Estado: ${data.estado}`;
+                document.getElementById('track-author').innerText = `👤 Origen: ${data.origen}`;
             } catch (error) {
                 document.getElementById('track-title').innerText = "📡 API: Conexión Órbita Terrestre";
                 document.getElementById('track-genre').innerText = "🎷 Género: Cyberpunk Synthwave";
@@ -605,7 +697,7 @@
             }
         }
 
-        // Precarga fluida del satélite GOES-16 en memoria
+        // Precarga de imagen del satélite GOES-16 en memoria sin parpadeos
         async function actualizarFondoGOES() {
             let urlImagen = `https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t=${Date.now()}`;
 
