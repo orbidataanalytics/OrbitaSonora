@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configuración CORS para permitir peticiones desde GitHub Pages
+# Permitir solicitudes desde GitHub Pages
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,7 +21,7 @@ app.add_middleware(
 def home():
     return {
         "status": "online",
-        "sistema": "Órbita Sonora API - Servidor Activo"
+        "sistema": "Órbita Sonora API"
     }
 
 @app.get("/api/datos")
@@ -37,7 +37,7 @@ def obtener_datos():
         "genero": "Electronic / Synthwave / Cyberpunk"
     }
 
-# Endpoint para gestionar la imagen del satélite GOES-16 en tiempo real sin saltos
+# Endpoint para la telemetría del satélite GOES-16 sin cortes
 @app.get("/api/goes")
 def obtener_goes():
     timestamp = int(time.time())
