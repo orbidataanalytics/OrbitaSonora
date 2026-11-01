@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import time
 
 app = FastAPI(
     title="Órbita Sonora API",
-    description="Backend oficial de Órbita Sonora conectado con productos NASA",
+    description="Backend oficial de Órbita Sonora / ORBIDATA con telemetría satelital GOES-16",
     version="1.0.0"
 )
 
-# Permitir conexiones desde cualquier origen (incluyendo GitHub Pages)
+# Configuración CORS para permitir peticiones desde GitHub Pages
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +21,7 @@ app.add_middleware(
 def home():
     return {
         "status": "online",
-        "mensaje": "API de Órbita Sonora funcionando desde la nube en Render"
+        "sistema": "Órbita Sonora API - Servidor Activo"
     }
 
 @app.get("/api/datos")
@@ -28,8 +29,23 @@ def obtener_datos():
     return {
         "proyecto": "Órbita Sonora",
         "organizacion": "ORBIDATA",
-        "planeta": "Tierra",
+        "planeta": "Tierra (GOES-16)",
         "estado": "Óptimo",
-        "origen": "NASA Open Data",
-        "pista_actual": "Emisiones de Plasma Espacial - Voyager 1"
+        "origen": "NOAA / NASA Open Data",
+        "album": "TRON: Legacy OST",
+        "autores": "Daft Punk",
+        "genero": "Electronic / Synthwave / Cyberpunk"
+    }
+
+# Endpoint para gestionar la imagen del satélite GOES-16 en tiempo real sin saltos
+@app.get("/api/goes")
+def obtener_goes():
+    timestamp = int(time.time())
+    return {
+        "satelite": "GOES-16 (GOES-East)",
+        "coordenadas": "75.2° W (Centrado en Suramérica)",
+        "tipo_captura": "GeoColor Full Disk (Color Real / Infrarrojo)",
+        "proveedor": "NOAA / NESDIS",
+        "timestamp": timestamp,
+        "image_url": f"https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t={timestamp}"
     }
