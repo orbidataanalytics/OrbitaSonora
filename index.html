@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órbita Sonora | ORBIDATA</title>
-    <!-- Fuentes: Orbitron, Pacifico, Poppins -->
+    <!-- Fuentes: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -19,7 +19,7 @@
             color: #ffffff;
             min-height: 100vh;
             background-color: #03050a;
-            /* Fondo dinámico del satélite GOES-16 centrado en Suramérica */
+            /* Fondo inicial GOES-16 centrado en Suramérica */
             background-image: radial-gradient(circle at center, rgba(10, 15, 30, 0.25) 0%, rgba(3, 5, 10, 0.88) 100%),
                         url('https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg');
             background-repeat: no-repeat;
@@ -35,18 +35,7 @@
             transition: background-image 1.2s ease-in-out;
         }
 
-        /* Contenedor técnico de YouTube en coordenadas negativas (evita bloqueos de autoplay) */
-        #yt-player-container {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* --- LOGO SUPERIOR ORBIDATA --- */
+        /* LOGO SUPERIOR ORBIDATA */
         header {
             width: 100%;
             padding: 25px 40px;
@@ -78,7 +67,7 @@
             color: #00f0ff;
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
+        /* CONTENEDOR PRINCIPAL */
         main {
             display: flex;
             flex-direction: column;
@@ -102,7 +91,7 @@
             margin-bottom: 25px;
         }
 
-        /* --- ROCOLA VINTAGE --- */
+        /* ROCOLA VINTAGE JUKEBOX */
         .jukebox-container {
             position: relative;
             width: 350px;
@@ -125,7 +114,6 @@
             transform: scale(1.02);
         }
 
-        /* Arco Neón Exterior */
         .jukebox-arch {
             position: absolute;
             top: 10px;
@@ -143,7 +131,6 @@
             100% { box-shadow: 0 0 25px #ff334b, inset 0 0 25px #ff334b; border-color: #ff334b; }
         }
 
-        /* Ventana del Vinilo */
         .jukebox-window {
             width: 230px;
             height: 135px;
@@ -158,7 +145,6 @@
             overflow: hidden;
         }
 
-        /* Disco de Vinilo Giratorio */
         .vinyl-record {
             width: 110px;
             height: 110px;
@@ -185,7 +171,7 @@
             border-radius: 50%;
         }
 
-        /* Pantalla Digital con Metadatos y Barra de Progreso */
+        /* PANTALLA DIGITAL */
         .jukebox-display {
             width: 290px;
             min-height: 115px;
@@ -226,7 +212,7 @@
             color: #a5f3fc;
         }
 
-        /* --- BARRA DE PROGRESO DE AUDIO --- */
+        /* BARRA DE PROGRESO DE AUDIO */
         .progress-container {
             margin-top: 6px;
             display: flex;
@@ -269,7 +255,6 @@
             letter-spacing: 1px;
         }
 
-        /* Rejilla de Altavoz */
         .jukebox-speaker {
             width: 290px;
             height: 65px;
@@ -338,7 +323,7 @@
             border-left: 3px solid #00f0ff;
         }
 
-        /* BOTONES INTERACTIVOS (🔴 Pausa, 🟢 Play, 🔵 Lista) */
+        /* BOTONES RETRO INTERACTIVOS (🔴 Pausa, 🟢 Play, 🔵 Lista) */
         .jukebox-buttons {
             display: flex;
             gap: 15px;
@@ -492,8 +477,8 @@
         </div>
     </main>
 
-    <!-- Contenedor iframe de YouTube (Técnicamente activo pero fuera de la vista) -->
-    <div id="yt-player-container"></div>
+    <!-- Reproductor de Audio Principal -->
+    <audio id="audio-player" preload="auto"></audio>
 
     <!-- 3. Logo NASA Fijo -->
     <div class="nasa-fixed-logo">
@@ -506,28 +491,25 @@
         🛰️ GOES-16 (Suramérica en vivo)
     </div>
 
-    <!-- API IFrame oficial de YouTube -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-
     <script>
-        // Enlaces exactos proporcionados de YouTube (Daft Punk - TRON Legacy)
+        // Metadatos y fuentes locales precargadas en la carpeta /audio/
         const playlist = [
             {
-                videoId: "x3gdLqoM6Ec",
+                url: "./audio/End Of Line - Daft Punk - TRON Legacy.mp3", //[cite: 2]
                 titulo: "End Of Line",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
                 genero: "Electronic / Cyberpunk"
             },
             {
-                videoId: "m4lkg-vdsgY",
+                url: "./audio/Derezzed - Daft Punk - TRON Legacy.mp3", //[cite: 1]
                 titulo: "Derezzed",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
                 genero: "Electro House / Synthwave"
             },
             {
-                videoId: "fsHz2DU7b7s",
+                url: "./audio/The Son Of Flynn - Daft Punk - TRON Legacy.mp3", //[cite: 3]
                 titulo: "The Son Of Flynn",
                 album: "TRON: Legacy OST",
                 autores: "Daft Punk",
@@ -537,45 +519,21 @@
 
         let pistaSeleccionada = 0;
         let pistaCargadaIndex = -1;
-        let player = null;
-        let timerProgreso = null;
+        const preloadedAudios = [];
 
+        const audio = document.getElementById('audio-player');
         const vinyl = document.getElementById('vinyl');
         const seekBar = document.getElementById('seek-bar');
         const timeDisplay = document.getElementById('time-display');
 
-        // Inicializar motor IFrame de YouTube
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player-container', {
-                height: '200',
-                width: '200',
-                videoId: playlist[0].videoId,
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'playsinline': 1
-                },
-                events: {
-                    'onReady': () => { actualizarPantalla(); },
-                    'onStateChange': onPlayerStateChange
-                }
+        // Precarga de buffer en memoria para reproducción instantánea sin latencia
+        function precargarRecursos() {
+            playlist.forEach((track, index) => {
+                const a = new Audio();
+                a.src = track.url;
+                a.preload = "auto";
+                preloadedAudios[index] = a;
             });
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.PLAYING) {
-                vinyl.classList.add('playing');
-                iniciarRastreoTiempo();
-            } else {
-                vinyl.classList.remove('playing');
-                detenerRastreoTiempo();
-            }
-
-            // Reproducción automática de la siguiente canción al finalizar
-            if (event.data === YT.PlayerState.ENDED) {
-                let siguiente = (pistaSeleccionada + 1) % playlist.length;
-                reproducirPistaDirecta(siguiente);
-            }
         }
 
         function formatearTiempo(segundos) {
@@ -585,32 +543,31 @@
             return `${min < 10 ? '0' : ''}${min}:${seg < 10 ? '0' : ''}${seg}`;
         }
 
-        // Rastreador continuo de la barra de avance
-        function iniciarRastreoTiempo() {
-            detenerRastreoTiempo();
-            timerProgreso = setInterval(() => {
-                if (player && player.getCurrentTime && player.getDuration) {
-                    const actual = player.getCurrentTime();
-                    const total = player.getDuration();
-                    if (total > 0) {
-                        const porcentaje = (actual / total) * 100;
-                        seekBar.value = porcentaje;
-                        timeDisplay.innerText = `${formatearTiempo(actual)} / ${formatearTiempo(total)}`;
-                    }
-                }
-            }, 500);
-        }
+        // Eventos del reproductor nativo HTML5
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const porcentaje = (audio.currentTime / audio.duration) * 100;
+                seekBar.value = porcentaje;
+                timeDisplay.innerText = `${formatearTiempo(audio.currentTime)} / ${formatearTiempo(audio.duration)}`;
+            }
+        });
 
-        function detenerRastreoTiempo() {
-            if (timerProgreso) clearInterval(timerProgreso);
-        }
+        audio.addEventListener('play', () => {
+            vinyl.classList.add('playing');
+        });
 
-        // Permite saltar a cualquier punto de la canción en YouTube deslizando la barra
+        audio.addEventListener('pause', () => {
+            vinyl.classList.remove('playing');
+        });
+
+        audio.addEventListener('ended', () => {
+            let siguiente = (pistaSeleccionada + 1) % playlist.length;
+            reproducirPistaDirecta(siguiente);
+        });
+
         function cambiarTiempo(valorPorcentaje) {
-            if (player && player.getDuration) {
-                const total = player.getDuration();
-                const nuevoTiempo = (valorPorcentaje / 100) * total;
-                player.seekTo(nuevoTiempo, true);
+            if (audio.duration) {
+                audio.currentTime = (valorPorcentaje / 100) * audio.duration;
             }
         }
 
@@ -633,42 +590,37 @@
             panel.classList.toggle('active');
         }
 
-        // Un Clic: Selecciona la canción
+        // Un Clic: Selecciona el ítem de la lista
         function seleccionarItem(index) {
             pistaSeleccionada = index;
             actualizarPantalla();
         }
 
-        // Doble Clic en la lista: Reproduce inmediatamente la canción desde YouTube
+        // Doble Clic o Botón Verde: Reproduce inmediatamente el archivo local
         function reproducirPistaDirecta(index) {
             pistaSeleccionada = index;
             pistaCargadaIndex = index;
             actualizarPantalla();
-            if (player && player.loadVideoById) {
-                player.loadVideoById(playlist[index].videoId);
-            }
+
+            audio.src = playlist[index].url;
+            audio.play().catch(e => console.log("Interacción requerida:", e));
         }
 
-        // 🟢 BOTÓN VERDE: Reproducir
+        // 🟢 BOTÓN VERDE: Reproducir Pista Seleccionada
         function reproducirAudio() {
-            if (!player) return;
-
             if (pistaCargadaIndex !== pistaSeleccionada) {
                 reproducirPistaDirecta(pistaSeleccionada);
             } else {
-                player.playVideo();
+                audio.play().catch(e => console.log("Error al reproducir:", e));
             }
         }
 
-        // 🔴 BOTÓN ROJO: Pausar
+        // 🔴 BOTÓN ROJO: Pausar Reproducción
         function pausarAudio() {
-            if (player && player.pauseVideo) {
-                player.pauseVideo();
-                vinyl.classList.remove('playing');
-            }
+            audio.pause();
         }
 
-        // Precarga fluida de la fotografía en tiempo real del satélite GOES-16 (NOAA)
+        // Precarga fluida en memoria de la toma satelital del GOES-16 (NOAA)
         async function actualizarFondoGOES() {
             let urlImagen = `https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t=${Date.now()}`;
 
@@ -678,9 +630,7 @@
                     const data = await res.json();
                     urlImagen = data.image_url;
                 }
-            } catch (e) {
-                // Fallback local en caso de que Render esté en reposo
-            }
+            } catch (e) {}
 
             const imgEnMemoria = new Image();
             imgEnMemoria.src = urlImagen;
@@ -692,8 +642,11 @@
             };
         }
 
+        // Inicialización
+        precargarRecursos();
         actualizarFondoGOES();
         setInterval(actualizarFondoGOES, 600000);
+        actualizarPantalla();
     </script>
 </body>
 </html>
