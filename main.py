@@ -4,10 +4,11 @@ import time
 
 app = FastAPI(
     title="Órbita Sonora API",
-    description="Backend oficial de Órbita Sonora / ORBIDATA",
+    description="Backend oficial de Órbita Sonora / ORBIDATA con telemetría satelital GOES-16",
     version="1.0.0"
 )
 
+# Configuración CORS permisiva para comunicación con GitHub Pages
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,44 +21,20 @@ app.add_middleware(
 def home():
     return {
         "status": "online",
-        "sistema": "Órbita Sonora API"
+        "sistema": "Órbita Sonora API - Servidor Activo"
     }
 
-# Endpoint que sirve el catálogo oficial a la rocola
 @app.get("/api/datos")
 def obtener_datos():
     return {
         "proyecto": "Órbita Sonora",
         "organizacion": "ORBIDATA",
         "planeta": "Tierra (GOES-16)",
-        "estado": "Óptimo",
+        "estado": "Conectado",
         "origen": "NOAA / NASA Open Data",
         "album": "TRON: Legacy OST",
         "autores": "Daft Punk",
-        "genero": "Electronic / Synthwave / Cyberpunk",
-        "catalogo": [
-            {
-                "id": 1,
-                "titulo": "End Of Line",
-                "album": "TRON: Legacy OST",
-                "autores": "Daft Punk",
-                "genero": "Electronic / Cyberpunk"
-            },
-            {
-                "id": 2,
-                "titulo": "Derezzed",
-                "album": "TRON: Legacy OST",
-                "autores": "Daft Punk",
-                "genero": "Electro House / Synthwave"
-            },
-            {
-                "id": 3,
-                "titulo": "The Son Of Flynn",
-                "album": "TRON: Legacy OST",
-                "autores": "Daft Punk",
-                "genero": "Ambient Synth / Electronic"
-            }
-        ]
+        "genero": "Electronic / Synthwave / Cyberpunk"
     }
 
 @app.get("/api/goes")
@@ -65,7 +42,7 @@ def obtener_goes():
     timestamp = int(time.time())
     return {
         "satelite": "GOES-16 (GOES-East)",
-        "coordenadas": "75.2° W (Centrado en Suramérica)",
+        "coordenadas": "75.2° W (Suramérica)",
         "tipo_captura": "GeoColor Full Disk",
         "image_url": f"https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t={timestamp}"
     }
