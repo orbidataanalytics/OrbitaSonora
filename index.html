@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órbita Sonora | ORBIDATA</title>
-    <!-- Fuentes: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
+    <!-- Tipografías: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -19,8 +19,8 @@
             color: #ffffff;
             min-height: 100vh;
             background-color: #03050a;
-            /* Fondo satelital GOES-16 GeoColor por defecto */
-            background-image: radial-gradient(circle at center, rgba(10, 15, 30, 0.2) 0%, rgba(3, 5, 10, 0.85) 100%),
+            /* Fondo satelital inicial del GOES-16 sobre Suramérica */
+            background-image: radial-gradient(circle at center, rgba(10, 15, 30, 0.25) 0%, rgba(3, 5, 10, 0.88) 100%),
                         url('https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg');
             background-repeat: no-repeat;
             background-position: center center;
@@ -32,7 +32,7 @@
             justify-content: space-between;
             overflow-x: hidden;
             position: relative;
-            transition: background-image 1s ease-in-out;
+            transition: background-image 1.2s ease-in-out;
         }
 
         /* --- LOGO SUPERIOR: ORBIDATA --- */
@@ -56,7 +56,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(10, 15, 30, 0.65);
+            background: rgba(10, 15, 30, 0.7);
             padding: 8px 24px;
             border-radius: 50px;
             border: 1px solid rgba(0, 240, 255, 0.4);
@@ -91,13 +91,13 @@
             margin-bottom: 25px;
         }
 
-        /* --- ROCOLA VINTAGE (Jukebox CSS) --- */
+        /* --- ROCOLA VINTAGE --- */
         .jukebox-container {
             position: relative;
-            width: 320px;
-            height: 510px;
+            width: 340px;
+            min-height: 530px;
             background: linear-gradient(145deg, rgba(43, 9, 56, 0.95), rgba(18, 3, 28, 0.95));
-            border-radius: 160px 160px 20px 20px;
+            border-radius: 170px 170px 20px 20px;
             border: 6px solid #ffd700;
             box-shadow: 0 0 35px rgba(255, 215, 0, 0.4), 
                         0 0 60px rgba(0, 240, 255, 0.25),
@@ -105,7 +105,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 25px;
+            padding: 25px 15px 20px;
             backdrop-filter: blur(8px);
             transition: transform 0.3s ease;
         }
@@ -114,30 +114,30 @@
             transform: scale(1.02);
         }
 
-        /* Arco Neón Exterior Animado */
+        /* Arco Neón Exterior */
         .jukebox-arch {
             position: absolute;
             top: 10px;
-            width: 280px;
-            height: 140px;
-            border-radius: 140px 140px 0 0;
-            border: 4px solid #ff334b;
-            box-shadow: 0 0 15px #ff334b, inset 0 0 15px #ff334b;
-            animation: neonGlow 2.5s infinite alternate;
+            width: 300px;
+            height: 150px;
+            border-radius: 150px 150px 0 0;
+            border: 4px solid #00f0ff;
+            box-shadow: 0 0 15px #00f0ff, inset 0 0 15px #00f0ff;
+            animation: neonGlow 3s infinite alternate;
         }
 
         @keyframes neonGlow {
-            0% { box-shadow: 0 0 12px #ff334b, inset 0 0 12px #ff334b; border-color: #ff334b; }
+            0% { box-shadow: 0 0 12px #00f0ff, inset 0 0 12px #00f0ff; border-color: #00f0ff; }
             50% { box-shadow: 0 0 20px #00e676, inset 0 0 20px #00e676; border-color: #00e676; }
-            100% { box-shadow: 0 0 25px #00b0ff, inset 0 0 25px #00b0ff; border-color: #00b0ff; }
+            100% { box-shadow: 0 0 25px #ff334b, inset 0 0 25px #ff334b; border-color: #ff334b; }
         }
 
         /* Ventana del Vinilo */
         .jukebox-window {
-            width: 220px;
-            height: 150px;
+            width: 230px;
+            height: 140px;
             background: rgba(0, 0, 0, 0.85);
-            border-radius: 110px 110px 15px 15px;
+            border-radius: 115px 115px 15px 15px;
             border: 3px solid #ffd700;
             margin-top: 15px;
             display: flex;
@@ -147,11 +147,11 @@
             overflow: hidden;
         }
 
-        /* Disco de Vinilo Giratorio */
+        /* Disco de Vinilo Giratorio (Solo gira con .playing) */
         .vinyl-record {
             width: 115px;
             height: 115px;
-            background: radial-gradient(circle, #333 15%, #111 16%, #111 30%, #222 31%, #111 45%, #ffd700 46%, #ff334b 100%);
+            background: radial-gradient(circle, #333 15%, #111 16%, #111 30%, #222 31%, #111 45%, #ffd700 46%, #00f0ff 100%);
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(0,0,0,0.8);
             animation: spin 4s linear infinite;
@@ -174,31 +174,51 @@
             border-radius: 50%;
         }
 
-        /* Pantalla digital de la Rocola */
+        /* Pantalla digital con Datos de la Canción (Título, Género, Autores) */
         .jukebox-display {
-            width: 250px;
-            min-height: 48px;
-            background: #0d1b2a;
+            width: 280px;
+            min-height: 82px;
+            background: #08101d;
             border: 2px solid #00f0ff;
             border-radius: 8px;
             margin-top: 15px;
-            padding: 8px 12px;
+            padding: 10px;
             font-family: 'Orbitron', monospace;
-            font-size: 0.72rem;
             color: #00f0ff;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
             text-shadow: 0 0 5px #00f0ff;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            text-align: center;
-            line-height: 1.3;
+            text-align: left;
+            gap: 4px;
+        }
+
+        .display-line {
+            font-size: 0.7rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .display-title {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.78rem;
+        }
+
+        .display-genre {
+            color: #ffd700;
+        }
+
+        .display-author {
+            color: #a5f3fc;
         }
 
         /* Rejilla de Altavoz */
         .jukebox-speaker {
-            width: 240px;
-            height: 120px;
+            width: 280px;
+            height: 85px;
             margin-top: 12px;
             background: repeating-linear-gradient(
                 0deg,
@@ -217,16 +237,53 @@
 
         .jukebox-title-badge {
             font-family: 'Pacifico', cursive;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #ffd700;
             text-shadow: 2px 2px 4px #000;
-            background: rgba(0,0,0,0.75);
+            background: rgba(0,0,0,0.8);
             padding: 4px 16px;
             border-radius: 20px;
             border: 1px solid #ffd700;
         }
 
-        /* --- BOTONES RETRO (ROJO, VERDE, AZUL) --- */
+        /* PANEL LISTA DESPLEGABLE DE CANCIONES (Botón Azul) */
+        .playlist-panel {
+            display: none;
+            width: 280px;
+            background: rgba(8, 16, 29, 0.95);
+            border: 2px solid #40c4ff;
+            border-radius: 8px;
+            margin-top: 10px;
+            padding: 8px;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 20;
+            backdrop-filter: blur(10px);
+        }
+
+        .playlist-panel.active {
+            display: flex;
+        }
+
+        .playlist-item {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.68rem;
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s, color 0.2s;
+            color: #a5f3fc;
+        }
+
+        .playlist-item:hover, .playlist-item.selected {
+            background: rgba(0, 240, 255, 0.2);
+            color: #ffffff;
+            border-left: 3px solid #00f0ff;
+        }
+
+        /* BOTONES INTERACTIVOS RETRO (🔴 Rojo, 🟢 Verde, 🔵 Azul) */
         .jukebox-buttons {
             display: flex;
             gap: 15px;
@@ -234,8 +291,8 @@
         }
 
         .btn-retro {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: 2px solid #ffffff;
             cursor: pointer;
@@ -245,23 +302,22 @@
             align-items: center;
             font-size: 1.1rem;
             color: #ffffff;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
 
-        /* 🔴 Botón 1: Rojo (Play / Pause) */
-        .btn-retro:nth-child(1) {
+        /* 🔴 Botón Rojo: Conexión API FastAPI */
+        .btn-red {
             background: radial-gradient(circle at 30% 30%, #ff5252, #c62828);
             box-shadow: 0 0 12px #ff5252;
         }
 
-        /* 🟢 Botón 2: Verde (Conectar API) */
-        .btn-retro:nth-child(2) {
+        /* 🟢 Botón Verde: Play / Pause Audio */
+        .btn-green {
             background: radial-gradient(circle at 30% 30%, #69f0ae, #2e7d32);
             box-shadow: 0 0 12px #69f0ae;
         }
 
-        /* 🔵 Botón 3: Azul (Siguiente Pista) */
-        .btn-retro:nth-child(3) {
+        /* 🔵 Botón Azul: Desplegar / Ocultar Lista de Canciones */
+        .btn-blue {
             background: radial-gradient(circle at 30% 30%, #40c4ff, #1565c0);
             box-shadow: 0 0 12px #40c4ff;
         }
@@ -289,11 +345,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .nasa-fixed-logo:hover {
-            transform: translateY(-3px);
         }
 
         .nasa-fixed-logo img {
@@ -321,7 +372,6 @@
             font-size: 0.72rem;
             color: #a5f3fc;
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         @media (max-width: 600px) {
@@ -340,7 +390,7 @@
         </div>
     </header>
 
-    <!-- 2. Contenido Principal: Título y Rocola -->
+    <!-- 2. Contenido Principal -->
     <main>
         <h1 class="main-title">Órbita Sonora</h1>
 
@@ -352,19 +402,29 @@
                 <div class="vinyl-center"></div>
             </div>
 
-            <div class="jukebox-display" id="api-status">
-                🔴 Presiona Rojo para iniciar sonido espacial
+            <!-- Pantalla Digital con Datos de la Canción (Título, Género, Autores) -->
+            <div class="jukebox-display" id="display-screen">
+                <div class="display-line display-title" id="track-title">🎵 Pista: End Of Line</div>
+                <div class="display-line display-genre" id="track-genre">🎷 Género: Cyberpunk / Synthwave</div>
+                <div class="display-line display-author" id="track-author">👤 Autores: Daft Punk (TRON: Legacy)</div>
+            </div>
+
+            <!-- Panel Lista Desplegable (Activado con Botón Azul) -->
+            <div class="playlist-panel" id="playlist-panel">
+                <div class="playlist-item selected" onclick="seleccionarPista(0)">1. End Of Line - Daft Punk</div>
+                <div class="playlist-item" onclick="seleccionarPista(1)">2. Derezzed - Daft Punk</div>
+                <div class="playlist-item" onclick="seleccionarPista(2)">3. The Son Of Flynn - Daft Punk</div>
             </div>
 
             <div class="jukebox-speaker">
-                <span class="jukebox-title-badge">Rock & Space</span>
+                <span class="jukebox-title-badge">TRON Legacy</span>
             </div>
 
-            <!-- Botones interactivos en orden RGB (Rojo, Verde, Azul) -->
+            <!-- Botones interactivos (🔴 Rojo: Conectar, 🟢 Verde: Play, 🔵 Azul: Lista) -->
             <div class="jukebox-buttons">
-                <button class="btn-retro" onclick="togglePlay()" title="🔴 Rojo: Reproducir / Pausar">▶</button>
-                <button class="btn-retro" onclick="conectarAPI()" title="🟢 Verde: Conectar FastAPI / NASA Data">📡</button>
-                <button class="btn-retro" onclick="siguientePista()" title="🔵 Azul: Siguiente Pista">⏭</button>
+                <button class="btn-retro btn-red" onclick="conectarAPI()" title="🔴 Rojo: Conectar FastAPI en Render">📡</button>
+                <button class="btn-retro btn-green" onclick="togglePlay()" title="🟢 Verde: Reproducir / Pausar">▶</button>
+                <button class="btn-retro btn-blue" onclick="togglePlaylist()" title="🔵 Azul: Lista de Canciones">📋</button>
             </div>
         </div>
     </main>
@@ -375,88 +435,94 @@
         <span>GOES-16 & NASA Open APIs</span>
     </div>
 
-    <!-- Indicador Satelital NOAA GOES-East (Abajo Derecha) -->
+    <!-- Indicador Satelital NOAA GOES-16 (Abajo Derecha) -->
     <div class="goes-indicator" id="goes-timer">
         🛰️ GOES-16 (Suramérica en vivo)
     </div>
 
-    <!-- Reproductor HTML5 de Audio -->
     <audio id="audio-player" preload="auto" loop></audio>
 
     <script>
+        // Lista de canciones de TRON: Legacy (Daft Punk) con metadatos completos
         const playlist = [
             {
-                titulo: "Pista 01: Plasma Waves (Voyager 1 - NASA)",
+                titulo: "End Of Line",
+                album: "TRON: Legacy OST",
+                autores: "Daft Punk",
+                genero: "Electronic / Cyberpunk",
                 url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Voyager_Plasma_Waves.mp3"
             },
             {
-                titulo: "Pista 02: Earth Atmosphere Soundwaves",
+                titulo: "Derezzed",
+                album: "TRON: Legacy OST",
+                autores: "Daft Punk",
+                genero: "Electro House / Synthwave",
                 url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Kepler_Star_KIC11771022.mp3"
             },
             {
-                titulo: "Pista 03: Jupiter Radio Waves (Galileo)",
+                titulo: "The Son Of Flynn",
+                album: "TRON: Legacy OST",
+                autores: "Daft Punk",
+                genero: "Ambient Synth / Electronic",
                 url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Jupiter_Ganymede_Sounds.mp3"
             }
         ];
 
-        let pistaActualIndex = 0;
+        let pistaIndex = 0;
         const audio = document.getElementById('audio-player');
         const vinyl = document.getElementById('vinyl');
-        const display = document.getElementById('api-status');
 
-        audio.src = playlist[pistaActualIndex].url;
+        // Actualizar datos en la pantalla digital
+        function actualizarPantalla() {
+            const track = playlist[pistaIndex];
+            document.getElementById('track-title').innerText = `🎵 Pista: ${track.titulo}`;
+            document.getElementById('track-genre').innerText = `🎷 Género: ${track.genero}`;
+            document.getElementById('track-author').innerText = `👤 Autores: ${track.autores}`;
 
-        // --- SISTEMA DE ACTUALIZACIÓN DEL SATÉLITE GOES-16 (NOAA) ---
-        function actualizarFondoGOES() {
-            const timestamp = new Date().getTime();
-            // URL oficial del satélite GOES-16 (GeoColor Full Disk centrado sobre Suramérica y América)
-            const urlGOES = `https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t=${timestamp}`;
-            
-            // Actualiza la imagen de fondo dinámicamente
-            document.body.style.backgroundImage = `radial-gradient(circle at center, rgba(10, 15, 30, 0.2) 0%, rgba(3, 5, 10, 0.85) 100%), url('${urlGOES}')`;
-            
-            const horaActual = new Date().toLocaleTimeString();
-            document.getElementById('goes-timer').innerText = `🛰️ GOES-16 Suramérica (${horaActual})`;
+            const items = document.querySelectorAll('.playlist-item');
+            items.forEach((item, index) => {
+                if (index === pistaIndex) item.classList.add('selected');
+                else item.classList.remove('selected');
+            });
         }
 
-        // Cargar primera vez y programar refresco automático cada 10 minutos (600,000 ms)
-        actualizarFondoGOES();
-        setInterval(actualizarFondoGOES, 600000);
+        audio.src = playlist[pistaIndex].url;
 
-        // 🔴 Botón Rojo: Reproducir / Pausar
+        // 🟢 BOTÓN VERDE: Reproducir / Pausar
         function togglePlay() {
             if (audio.paused) {
                 audio.play().then(() => {
                     vinyl.classList.add('playing');
-                    display.innerText = "▶ " + playlist[pistaActualIndex].titulo;
                 }).catch(() => {
-                    display.innerText = "⚠️ Haz clic en 🔴 para autorizar el audio";
+                    alert("Haz clic en la pantalla para autorizar la reproducción de audio en tu navegador.");
                 });
             } else {
                 audio.pause();
                 vinyl.classList.remove('playing');
-                display.innerText = "⏸ Pausado: " + playlist[pistaActualIndex].titulo;
             }
         }
 
-        // 🔵 Botón Azul: Siguiente Pista
-        function siguientePista() {
-            pistaActualIndex = (pistaActualIndex + 1) % playlist.length;
-            audio.src = playlist[pistaActualIndex].url;
-            display.innerText = "🔄 Cargando: " + playlist[pistaActualIndex].titulo;
-            
+        // 🔵 BOTÓN AZUL: Desplegar / Ocultar Lista de Canciones
+        function togglePlaylist() {
+            const panel = document.getElementById('playlist-panel');
+            panel.classList.toggle('active');
+        }
+
+        // Selección manual de canción desde la lista
+        function seleccionarPista(index) {
+            pistaIndex = index;
+            audio.src = playlist[pistaIndex].url;
+            actualizarPantalla();
             audio.play().then(() => {
                 vinyl.classList.add('playing');
-                display.innerText = "▶ " + playlist[pistaActualIndex].titulo;
-            }).catch(() => {
-                vinyl.classList.remove('playing');
             });
         }
 
-        // 🟢 Botón Verde: Conectar con FastAPI o Fallback a NASA APOD
+        // 🔴 BOTÓN ROJO: Conectar con FastAPI en Render
         async function conectarAPI() {
-            display.innerText = "⚡ Conectando a datos orbitales...";
+            document.getElementById('track-title').innerText = "⚡ Conectando a FastAPI...";
             
+            // Dirección oficial de tu servicio en Render
             const RENDER_URL = 'https://orbita-sonora.onrender.com/api/datos';
 
             try {
@@ -464,17 +530,46 @@
                 if (!response.ok) throw new Error("Render offline");
                 
                 const data = await response.json();
-                display.innerText = `📡 Render: ${data.planeta} | Estado: ${data.estado}`;
+                document.getElementById('track-title').innerText = `📡 API: ${data.planeta}`;
+                document.getElementById('track-genre').innerText = `🎷 Género: ${data.genero}`;
+                document.getElementById('track-author').innerText = `👤 Autores: ${data.autores}`;
             } catch (error) {
-                try {
-                    const nasaRes = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
-                    const nasaData = await nasaRes.json();
-                    display.innerText = `🌌 NASA APOD: ${nasaData.title.substring(0, 30)}...`;
-                } catch (nasaErr) {
-                    display.innerText = "📡 GOES-16: Suramérica Transmitiendo";
-                }
+                document.getElementById('track-title').innerText = "📡 API: Conexión Órbita Terrestre";
+                document.getElementById('track-genre').innerText = "🎷 Género: Cyberpunk Synthwave";
+                document.getElementById('track-author').innerText = "👤 Autores: Daft Punk (Modo Demo)";
             }
         }
+
+        // --- PRECARGA EN MEMORIA DEL SATÉLITE GOES-16 (SIN SALTOS NI PARPADEOS) ---
+        async function actualizarFondoGOES() {
+            let urlImagen = `https://cdn.star.nesdis.noaa.gov/GOES16/ABI/FD/GEOCOLOR/1808x1808.jpg?t=${Date.now()}`;
+
+            // Consultar la URL administrada desde el servidor FastAPI
+            try {
+                const res = await fetch('https://orbita-sonora.onrender.com/api/goes');
+                if (res.ok) {
+                    const data = await res.json();
+                    urlImagen = data.image_url;
+                }
+            } catch (e) {
+                // Fallback local en caso de que Render esté en reposo
+            }
+
+            // Descarga silenciosa en segundo plano antes de reemplazar el fondo actual
+            const imgEnMemoria = new Image();
+            imgEnMemoria.src = urlImagen;
+
+            imgEnMemoria.onload = () => {
+                document.body.style.backgroundImage = `radial-gradient(circle at center, rgba(10, 15, 30, 0.25) 0%, rgba(3, 5, 10, 0.88) 100%), url('${urlImagen}')`;
+                const horaActual = new Date().toLocaleTimeString();
+                document.getElementById('goes-timer').innerText = `🛰️ GOES-16 Suramérica (${horaActual})`;
+            };
+        }
+
+        // Ejecutar carga satelital inicial y refrescar cada 10 minutos
+        actualizarFondoGOES();
+        setInterval(actualizarFondoGOES, 600000);
+        actualizarPantalla();
     </script>
 </body>
 </html>
