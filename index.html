@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órbita Sonora | ORBIDATA</title>
+    <!-- Fuentes: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./web/css/rocola.css">
+    <link rel="stylesheet" href="./web/css/analisis.css">
+    <link rel="stylesheet" href="./web/css/partituras.css">
+    <link rel="stylesheet" href="./web/css/informes.css">
+    <meta name="orbita-api-base" content="https://orbita-sonora.onrender.com">
+</head>
+<body>
+
+    <!-- 1. Logo Superior ORBIDATA -->
+    <header>
+        <div class="orbidata-logo">
+            <span>ORBI</span>DATA
+        </div>
+    </header>
+
+    <!-- 2. Contenido Principal -->
+    <main>
+        <h1 class="main-title">Órbita Sonora</h1>
+
+        <div class="jukebox-container">
+            <div class="jukebox-arch"></div>
+            
+            <div class="jukebox-window">
+                <div class="vinyl-record" id="vinyl"></div>
+                <div class="vinyl-center"></div>
+            </div>
+
+            <!-- Display Digital de la Rocola -->
+            <div class="jukebox-display" id="display-screen">
+                <div class="display-line display-title" id="track-title">🎵 Pista: End Of Line</div>
+                <div class="display-line display-genre" id="track-genre">🎷 Género: Electronic / Cyberpunk</div>
+                <div class="display-line display-author" id="track-author">👤 Autores: Daft Punk (TRON: Legacy)</div>
+
+                <!-- Barra de Progreso y Tiempo Real -->
+                <div class="progress-container">
+                    <div class="progress-bar-wrapper">
+                        <input type="range" class="seek-slider" id="seek-bar" min="0" max="100" value="0" oninput="cambiarTiempo(this.value)">
+                    </div>
+                    <div class="time-label" id="time-display">00:00 / 00:00</div>
+                </div>
+            </div>
+
+            <!-- Panel Lista Desplegable (Activado con Botón Azul) -->
+            <div class="playlist-panel" id="playlist-panel">
+                <div class="playlist-item selected" onclick="seleccionarItem(0)" ondblclick="reproducirPistaDirecta(0)">1. End Of Line - Daft Punk</div>
+                <div class="playlist-item" onclick="seleccionarItem(1)" ondblclick="reproducirPistaDirecta(1)">2. Derezzed - Daft Punk</div>
+                <div class="playlist-item" onclick="seleccionarItem(2)" ondblclick="reproducirPistaDirecta(2)">3. The Son Of Flynn - Daft Punk</div>
+            </div>
+
+            <div class="jukebox-speaker">
+                <span class="jukebox-title-badge">TRON Legacy</span>
+            </div>
+
+            <!-- Botones Interactivos: Rojo (Pausa), Verde (Play), Azul (Lista) -->
+            <div class="jukebox-buttons">
+                <button class="btn-retro btn-red" onclick="pausarAudio()" title="🔴 Rojo: Pausar Reproducción">⏸</button>
+                <button class="btn-retro btn-green" onclick="reproducirAudio()" title="🟢 Verde: Reproducir Canción Seleccionada">▶</button>
+                <button class="btn-retro btn-blue" onclick="togglePlaylist()" title="🔵 Azul: Abrir / Cerrar Lista de Canciones">📋</button>
+            </div>
+        </div>
+        <section class="pixel-panel" aria-labelledby="pixel-title">
+            <div class="pixel-heading">
+                <div>
+                    <p class="pixel-kicker">La canción escribe su imagen</p>
+                    <h2 id="pixel-title">Recorrido píxel a píxel</h2>
+                    <p class="pixel-help" id="pixel-song">Selecciona una pista en la rocola.</p>
+                </div>
+                <span class="pixel-state" id="pixel-state" role="status">Listo para reproducir</span>
+            </div>
+            <div class="pixel-toolbar">
+                <label>Recorrido
+                    <select id="pixel-path">
+                        <option value="filas">Filas de izquierda a derecha</option>
+                        <option value="serpentina">Serpentina</option>
+                        <option value="hilbert">Hilbert · píxeles vecinos</option>
+                    </select>
+                </label>
+                <button type="button" id="pixel-save">Descargar cuatro imágenes PNG</button>
+                <span class="pixel-path-note">64 × 64 píxeles · 4096 pasos · mismo reloj y posición en los cuatro paneles</span>
+            </div>
+            <div class="pixel-readout">
+                <div class="pixel-stat">Píxel activo<strong id="pixel-position">1 / 4096 · columna 1, fila 1</strong></div>
+                <div class="pixel-stat">Intervalo de la canción<strong id="pixel-time">0.000–0.000 s</strong></div>
+                <div class="pixel-stat">Recorrido completado<strong id="pixel-progress">0.00 %</strong></div>
+            </div>
+            <div class="pixel-images">
+                <figure class="pixel-image-card"><figcaption><strong>Composición RGB</strong><span id="pixel-rgb-label">#000000</span></figcaption><canvas id="pixel-rgb" width="512" height="512" tabindex="0" aria-label="Imagen RGB. Haz clic para ir al tiempo de un píxel; flechas para avanzar o retroceder."></canvas></figure>
+                <figure class="pixel-image-card"><figcaption><strong style="color:#ff828b">R · bajos</strong><span>20–250 Hz</span></figcaption><canvas id="pixel-r" width="512" height="512" tabindex="0" aria-label="Banda roja de bajos, con el mismo píxel activo."></canvas></figure>
+                <figure class="pixel-image-card"><figcaption><strong style="color:#8aefae">G · medios</strong><span>350–500 Hz</span></figcaption><canvas id="pixel-g" width="512" height="512" tabindex="0" aria-label="Banda verde de medios, con el mismo píxel activo."></canvas></figure>
+                <figure class="pixel-image-card"><figcaption><strong style="color:#8cb4ff">B · altos</strong><span>600–20 000 Hz</span></figcaption><canvas id="pixel-b" width="512" height="512" tabindex="0" aria-label="Banda azul de altos, con el mismo píxel activo."></canvas></figure>
+            </div>
+            <p class="pixel-canvas-note">El cuadro blanco señala el píxel actual. Haz clic en cualquier imagen para buscar ese instante; las flechas recorren los píxeles uno a uno. Guardas excluidas: 250–350 y 500–600 Hz.</p>
+            <section class="pixel-section" aria-labelledby="pixel-signature-title">
+                <h3 id="pixel-signature-title">Firma dinámica de tres bandas</h3>
+                <p class="pixel-help">La curva muestra la intensidad del píxel señalado en las tres bandas, sobre una escala común. Sigue las pausas y los saltos de la rocola.</p>
+                <div class="pixel-signature-wrap">
+                    <canvas id="pixel-signature" class="pixel-chart" width="900" height="320" aria-label="Curva de intensidad actual en bajos, medios y altos."></canvas>
+                    <div class="pixel-current">
+                        <div class="pixel-band-value"><span style="color:#ff828b">R · bajos</span><strong id="pixel-value-r">0 %</strong></div>
+                        <div class="pixel-band-value"><span style="color:#8aefae">G · medios</span><strong id="pixel-value-g">0 %</strong></div>
+                        <div class="pixel-band-value"><span style="color:#8cb4ff">B · altos</span><strong id="pixel-value-b">0 %</strong></div>
+                        <div><div id="pixel-swatch" class="pixel-swatch"></div><p class="pixel-footnote" id="pixel-signature-text">Intensidad visual del píxel actual.</p></div>
+                    </div>
+                </div>
+            </section>
+            <section class="score-panel" aria-labelledby="score-title">
+                <h3 id="score-title">Tres partituras al mismo tiempo</h3>
+                <p class="pixel-help">Transcripción espectral automática de la componente dominante de cada banda. La posición horizontal sigue los segundos de la canción. Las barras indican duración; las cruces señalan sonidos sin altura definida.</p>
+                <div class="score-toolbar"><label>Ventana temporal <select id="score-window"><option value="8">8 segundos</option><option value="12">12 segundos</option><option value="24">24 segundos</option></select></label><span class="pixel-help" id="score-range"></span><strong class="pixel-help" id="score-time">0.000 s · píxel 1</strong></div>
+                <div class="score-current-row"><div style="color:#ff828b">R · bajos<strong id="score-current-R">Silencio</strong></div><div style="color:#8aefae">G · medios<strong id="score-current-G">Silencio</strong></div><div style="color:#8cb4ff">B · altos<strong id="score-current-B">Silencio</strong></div></div>
+                <div class="score-scroll" id="score-R"></div><div class="score-scroll" id="score-G"></div><div class="score-scroll" id="score-B"></div>
+                <p class="pixel-footnote">El cursor amarillo comparte el reloj con los píxeles. Haz clic en un pentagrama para buscar ese instante. R se escribe con 8vb y B con 8va; los nombres y Hz muestran la altura sonora real. Es una estimación de componentes espectrales, con una voz por banda; puede incluir armónicos y no recoge todos los acordes. No se infiere compás ni tempo.</p>
+            </section>
+            <section class="pixel-section" aria-labelledby="pixel-occupancy-title">
+                <h3 id="pixel-occupancy-title">Dónde se repiten las firmas</h3>
+                <p class="pixel-help">Cada firma agrupa intensidades parecidas de las tres bandas. El mapa ubica sus repeticiones en la imagen; las curvas muestran las seis firmas más frecuentes.</p>
+                <div class="pixel-toolbar">
+                    <label>Agrupación por banda<select id="pixel-levels"><option value="4">4 niveles · agrupación amplia</option><option value="8" selected>8 niveles · agrupación media</option><option value="16">16 niveles · agrupación fina</option></select></label>
+                    <label>Contar en<select id="pixel-scope"><option value="completa">La canción completa</option><option value="cursor">El tramo hasta el cursor</option></select></label>
+                    <button id="pixel-show-all" type="button">Mostrar todas las firmas</button>
+                </div>
+                <div class="pixel-occupancy-grid">
+                    <div class="pixel-heat-wrap">
+                        <canvas id="pixel-heat" class="pixel-heat-canvas" width="512" height="512" tabindex="0" aria-label="Mapa de repetición. Rojo: firma más frecuente; verde: menos frecuente. Haz clic para buscar un píxel."></canvas>
+                        <div class="pixel-legend"></div><div class="pixel-legend-labels"><span>Menos repetida</span><span>Más repetida</span></div>
+                        <p class="pixel-footnote">Negro: silencio excluido. Gris: tramo todavía no contado. El color del semáforo expresa repetición; el RGB de arriba expresa intensidad.</p>
+                    </div>
+                    <div>
+                        <canvas id="pixel-occupancy" class="pixel-chart" width="900" height="340" aria-label="Curvas de firmas frecuentes, coloreadas por su número de repeticiones."></canvas>
+                        <p class="pixel-footnote" id="pixel-occupancy-summary"></p>
+                        <table class="pixel-ranks"><thead><tr><th>Firma agrupada R G B</th><th>Intervalos</th><th>Ocupación</th><th>Ubicar</th></tr></thead><tbody id="pixel-ranks"></tbody></table>
+                        <p class="pixel-footnote" id="pixel-filter-label">Se muestran todas las firmas.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="report-tools" aria-labelledby="report-title">
+                <h3 id="report-title">Píxeles destacados e informe imprimible</h3>
+                <p class="pixel-help">El informe añade máximos por banda, cambios de firma, grupos frecuentes y tus marcas manuales. Incluye imágenes, estadísticas y las partituras completas de la pista o de las tres canciones.</p>
+                <div class="pixel-toolbar"><strong class="pixel-help" id="report-current-pixel">Píxel 1</strong><input id="report-mark-note" type="text" maxlength="240" aria-label="Nota sobre el píxel destacado" placeholder="Nota opcional sobre este píxel"><button id="report-mark" type="button">Marcar píxel actual</button></div>
+                <p class="pixel-footnote" id="report-mark-count">0 marcas manuales</p><div id="report-marks" class="report-mark-list"></div>
+                <div class="pixel-toolbar"><label>Contenido del informe<select id="report-scope"><option value="actual">Pista actual</option><option value="todas">Las tres canciones</option></select></label><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="report-full-scores" checked> Incluir partituras completas</label><button id="report-build" type="button">Preparar informe imprimible</button></div>
+                <p class="pixel-footnote">Preparar el informe pausa la rocola. La repetición del informe se calcula sobre la canción completa. Desde la vista preparada puedes imprimir, guardar PDF o descargar un HTML autónomo con todas sus figuras.</p>
+            </section>
+            <p class="pixel-footnote">Una repetición es un intervalo que pertenece al mismo grupo de intensidades; no cuenta cuántas veces has reproducido la canción. La ocupación se calcula sobre intervalos con energía. Las imágenes resumen el audio y no permiten recuperarlo sin pérdida.</p>
+        </section>
+
+    </main>
+
+    <section id="print-report" aria-label="Informe imprimible" hidden></section>
+
+    <!-- Reproductor de Audio Principal -->
+    <audio id="audio-player" preload="auto"></audio>
+
+    <!-- 3. Logo NASA Fijo -->
+    <div class="nasa-fixed-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" alt="NASA Logo">
+        <span>GOES-16 & NASA Open APIs</span>
+    </div>
+
+    <!-- Indicador Satelital NOAA GOES-16 -->
+    <div class="goes-indicator" id="goes-timer">
+        🛰️ GOES-16 (Suramérica en vivo)
+    </div>
+    <script type="module" src="./web/js/app.js"></script>
+</body>
+</html>

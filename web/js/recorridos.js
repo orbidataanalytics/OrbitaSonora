@@ -1,0 +1,2 @@
+export function puntoHilbert(i,lado){let x=0,y=0,t=i;for(let s=1;s<lado;s*=2){const rx=1&(t>>1),ry=1&(t^rx);if(ry===0){if(rx===1){x=s-1-x;y=s-1-y;}[x,y]=[y,x];}x+=s*rx;y+=s*ry;t>>=2;}return [x,y];}
+export function coordenadasRecorrido(lado,recorrido){return Array.from({length:lado*lado},(_,i)=>{let x=i%lado,y=Math.floor(i/lado);if(recorrido==='serpentina'&&y%2)x=lado-1-x;else if(recorrido==='hilbert')[x,y]=puntoHilbert(i,lado);return [x,y];});}
