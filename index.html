@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órbita Sonora | ORBIDATA</title>
-    <!-- Fuentes oficiales: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
+    <!-- Fuentes: Orbitron (Futurista), Pacifico (Retro Jukebox), Poppins (Texto) -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -68,7 +68,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            margin: 10px 0 50px;
+            margin: 10px 0 40px;
             z-index: 5;
             width: 100%;
             max-width: 900px;
@@ -90,12 +90,12 @@
         .jukebox-container {
             position: relative;
             width: 320px;
-            height: 480px;
+            height: 510px;
             background: linear-gradient(145deg, #2b0938, #12031c);
             border-radius: 160px 160px 20px 20px;
             border: 6px solid #ffd700;
             box-shadow: 0 0 35px rgba(255, 215, 0, 0.4), 
-                        0 0 60px rgba(255, 0, 128, 0.3),
+                        0 0 60px rgba(0, 240, 255, 0.25),
                         inset 0 0 20px rgba(0, 0, 0, 0.8);
             display: flex;
             flex-direction: column;
@@ -115,14 +115,15 @@
             width: 280px;
             height: 140px;
             border-radius: 140px 140px 0 0;
-            border: 4px solid #ff007f;
-            box-shadow: 0 0 15px #ff007f, inset 0 0 15px #ff007f;
-            animation: neonGlow 2s infinite alternate;
+            border: 4px solid #ff334b;
+            box-shadow: 0 0 15px #ff334b, inset 0 0 15px #ff334b;
+            animation: neonGlow 2.5s infinite alternate;
         }
 
         @keyframes neonGlow {
-            0% { box-shadow: 0 0 12px #ff007f, inset 0 0 12px #ff007f; }
-            100% { box-shadow: 0 0 25px #00f0ff, inset 0 0 25px #00f0ff; border-color: #00f0ff; }
+            0% { box-shadow: 0 0 12px #ff334b, inset 0 0 12px #ff334b; border-color: #ff334b; }
+            50% { box-shadow: 0 0 20px #00e676, inset 0 0 20px #00e676; border-color: #00e676; }
+            100% { box-shadow: 0 0 25px #00b0ff, inset 0 0 25px #00b0ff; border-color: #00b0ff; }
         }
 
         /* Ventana del Vinilo */
@@ -142,12 +143,17 @@
 
         /* Disco de Vinilo Giratorio */
         .vinyl-record {
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #333 15%, #111 16%, #111 30%, #222 31%, #111 45%, #ffd700 46%, #ff007f 100%);
+            width: 115px;
+            height: 115px;
+            background: radial-gradient(circle, #333 15%, #111 16%, #111 30%, #222 31%, #111 45%, #ffd700 46%, #ff334b 100%);
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(0,0,0,0.8);
             animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .vinyl-record.playing {
+            animation-play-state: running;
         }
 
         @keyframes spin {
@@ -164,24 +170,30 @@
 
         /* Pantalla digital de la Rocola */
         .jukebox-display {
-            width: 240px;
+            width: 250px;
+            min-height: 48px;
             background: #0d1b2a;
             border: 2px solid #00f0ff;
             border-radius: 8px;
-            margin-top: 20px;
+            margin-top: 15px;
             padding: 8px 12px;
             font-family: 'Orbitron', monospace;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: #00f0ff;
             box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
             text-shadow: 0 0 5px #00f0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.3;
         }
 
         /* Rejilla de Altavoz */
         .jukebox-speaker {
             width: 240px;
-            height: 140px;
-            margin-top: 15px;
+            height: 120px;
+            margin-top: 12px;
             background: repeating-linear-gradient(
                 0deg,
                 #1a1a2e,
@@ -199,38 +211,61 @@
 
         .jukebox-title-badge {
             font-family: 'Pacifico', cursive;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: #ffd700;
             text-shadow: 2px 2px 4px #000;
-            background: rgba(0,0,0,0.6);
-            padding: 4px 15px;
+            background: rgba(0,0,0,0.65);
+            padding: 4px 16px;
             border-radius: 20px;
             border: 1px solid #ffd700;
         }
 
-        /* Botones Interactivos Retro */
+        /* --- BOTONES INTERACTIVOS RETRO (ROJO, VERDE, AZUL) --- */
         .jukebox-buttons {
             display: flex;
-            gap: 12px;
+            gap: 15px;
             margin-top: 15px;
         }
 
         .btn-retro {
-            width: 36px;
-            height: 36px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            border: 2px solid #fff;
-            background: radial-gradient(circle, #ff007f, #880044);
-            box-shadow: 0 0 8px #ff007f;
+            border: 2px solid #ffffff;
             cursor: pointer;
-            transition: transform 0.1s, box-shadow 0.2s;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
         }
 
-        .btn-retro:nth-child(2) { background: radial-gradient(circle, #00f0ff, #006688); box-shadow: 0 0 8px #00f0ff; }
-        .btn-retro:nth-child(3) { background: radial-gradient(circle, #ffd700, #998000); box-shadow: 0 0 8px #ffd700; }
+        /* 🔴 Botón 1: Rojo (Play / Pause) */
+        .btn-retro:nth-child(1) {
+            background: radial-gradient(circle at 30% 30%, #ff5252, #c62828);
+            box-shadow: 0 0 12px #ff5252;
+        }
+
+        /* 🟢 Botón 2: Verde (Conectar API) */
+        .btn-retro:nth-child(2) {
+            background: radial-gradient(circle at 30% 30%, #69f0ae, #2e7d32);
+            box-shadow: 0 0 12px #69f0ae;
+        }
+
+        /* 🔵 Botón 3: Azul (Siguiente Pista) */
+        .btn-retro:nth-child(3) {
+            background: radial-gradient(circle at 30% 30%, #40c4ff, #1565c0);
+            box-shadow: 0 0 12px #40c4ff;
+        }
+
+        .btn-retro:hover {
+            transform: scale(1.12);
+        }
 
         .btn-retro:active {
-            transform: scale(0.9);
+            transform: scale(0.92);
         }
 
         /* --- LOGO NASA FIJO (Abajo a la Izquierda) --- */
@@ -269,7 +304,7 @@
 
         @media (max-width: 600px) {
             .main-title { font-size: 2.2rem; }
-            .jukebox-container { scale: 0.85; }
+            .jukebox-container { scale: 0.88; }
         }
     </style>
 </head>
@@ -290,22 +325,23 @@
             <div class="jukebox-arch"></div>
             
             <div class="jukebox-window">
-                <div class="vinyl-record"></div>
+                <div class="vinyl-record" id="vinyl"></div>
                 <div class="vinyl-center"></div>
             </div>
 
             <div class="jukebox-display" id="api-status">
-                ▶ Pista 01: Sonidos del Espacio (NASA)
+                🔴 Presiona Rojo para iniciar sonido espacial
             </div>
 
             <div class="jukebox-speaker">
                 <span class="jukebox-title-badge">Rock & Space</span>
             </div>
 
+            <!-- Botones en orden RGB (Rojo, Verde, Azul) -->
             <div class="jukebox-buttons">
-                <button class="btn-retro" onclick="cambiarPista('Sonidos de Júpiter')" title="Pista 1"></button>
-                <button class="btn-retro" onclick="conectarAPI()" title="Conectar con FastAPI en Render"></button>
-                <button class="btn-retro" onclick="cambiarPista('Ondas de Radio Terrestres')" title="Pista 3"></button>
+                <button class="btn-retro" onclick="togglePlay()" title="🔴 Rojo: Reproducir / Pausar">▶</button>
+                <button class="btn-retro" onclick="conectarAPI()" title="🟢 Verde: Conectar FastAPI / NASA Data">📡</button>
+                <button class="btn-retro" onclick="siguientePista()" title="🔵 Azul: Siguiente Pista">⏭</button>
             </div>
         </div>
     </main>
@@ -313,28 +349,86 @@
     <!-- 3. Logo NASA Siempre Visible (Abajo Izquierda) -->
     <div class="nasa-fixed-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" alt="NASA Logo">
-        <span>NASA Partner Data</span>
+        <span>NASA Open APIs</span>
     </div>
 
-    <!-- Script de interacción con Render -->
+    <!-- Reproductor HTML5 de Audio -->
+    <audio id="audio-player" preload="auto" loop></audio>
+
     <script>
-        function cambiarPista(nombre) {
-            document.getElementById('api-status').innerText = "▶ Reproduciendo: " + nombre;
+        const playlist = [
+            {
+                titulo: "Pista 01: Plasma Waves (Voyager 1 - NASA)",
+                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Voyager_Plasma_Waves.mp3"
+            },
+            {
+                titulo: "Pista 02: Earth Atmosphere Soundwaves",
+                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Kepler_Star_KIC11771022.mp3"
+            },
+            {
+                titulo: "Pista 03: Jupiter Radio Waves (Galileo)",
+                url: "https://ia800301.us.archive.org/6/items/NASA_Space_Sounds/Jupiter_Ganymede_Sounds.mp3"
+            }
+        ];
+
+        let pistaActualIndex = 0;
+        const audio = document.getElementById('audio-player');
+        const vinyl = document.getElementById('vinyl');
+        const display = document.getElementById('api-status');
+
+        audio.src = playlist[pistaActualIndex].url;
+
+        // 🔴 Botón Rojo: Reproducir / Pausar
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    vinyl.classList.add('playing');
+                    display.innerText = "▶ " + playlist[pistaActualIndex].titulo;
+                }).catch(() => {
+                    display.innerText = "⚠️ Haz clic en 🔴 para autorizar el audio";
+                });
+            } else {
+                audio.pause();
+                vinyl.classList.remove('playing');
+                display.innerText = "⏸ Pausado: " + playlist[pistaActualIndex].titulo;
+            }
         }
 
-        async function conectarAPI() {
-            const statusDiv = document.getElementById('api-status');
-            statusDiv.innerText = "⚡ Conectando a FastAPI...";
+        // 🔵 Botón Azul: Siguiente Pista
+        function siguientePista() {
+            pistaActualIndex = (pistaActualIndex + 1) % playlist.length;
+            audio.src = playlist[pistaActualIndex].url;
+            display.innerText = "🔄 Cargando: " + playlist[pistaActualIndex].titulo;
             
-            // COPIA Y PEGA AQUÍ LA URL DE TU SERVICIO EN RENDER:
-            const RENDER_URL = 'https://TU-SERVICIO-EN-RENDER.onrender.com/api/datos';
+            audio.play().then(() => {
+                vinyl.classList.add('playing');
+                display.innerText = "▶ " + playlist[pistaActualIndex].titulo;
+            }).catch(() => {
+                vinyl.classList.remove('playing');
+            });
+        }
+
+        // 🟢 Botón Verde: Conectar con FastAPI o Fallback a NASA
+        async function conectarAPI() {
+            display.innerText = "⚡ Conectando a datos orbitales...";
+            
+            // Reemplaza esta URL con la que te dio Render cuando tu backend esté activo:
+            const RENDER_URL = 'https://orbita-sonora.onrender.com/api/datos';
 
             try {
-                const response = await fetch(RENDER_URL);
+                const response = await fetch(RENDER_URL, { method: 'GET' });
+                if (!response.ok) throw new Error("Render offline");
+                
                 const data = await response.json();
-                statusDiv.innerText = "📡 API: " + data.planeta + " | Estado: " + data.estado;
+                display.innerText = `📡 Render: ${data.planeta} | Estado: ${data.estado}`;
             } catch (error) {
-                statusDiv.innerText = "▶ Pista 02: Órbita Terrestre (Modo Demo)";
+                try {
+                    const nasaRes = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
+                    const nasaData = await nasaRes.json();
+                    display.innerText = `🌌 NASA APOD: ${nasaData.title.substring(0, 30)}...`;
+                } catch (nasaErr) {
+                    display.innerText = "📡 API Modo Demo: Conexión Terrestre OK";
+                }
             }
         }
     </script>
