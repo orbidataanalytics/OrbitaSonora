@@ -8,7 +8,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Permitir solicitudes desde GitHub Pages
+# Configuración CORS permisiva para comunicación con GitHub Pages
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -37,7 +37,6 @@ def obtener_datos():
         "genero": "Electronic / Synthwave / Cyberpunk"
     }
 
-# Telemetría del satélite GOES-16 centrado en Suramérica
 @app.get("/api/goes")
 def obtener_goes():
     timestamp = int(time.time())
