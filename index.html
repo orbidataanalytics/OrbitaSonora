@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Órbita Sonora | NASA Products & Earth View</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #ffffff;
+            min-height: 100vh;
+            /* Fondo astronómico oficial con la Tierra vista desde el espacio */
+            background: linear-gradient(rgba(11, 19, 43, 0.75), rgba(11, 19, 43, 0.85)),
+                        url('https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        /* Targeta estilo Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        header {
+            text-align: center;
+            position: relative;
+        }
+
+        /* Animación Orbital */
+        .planet-orbit {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #4cc9f0, #4361ee, #3a0ca3);
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.6);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .orbit-ring {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            width: 130px;
+            height: 130px;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: rotate 12s linear infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #4cc9f0, #f72585);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: #d1d5db;
+            margin-bottom: 25px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(76, 201, 240, 0.2);
+            border: 1px solid #4cc9f0;
+            color: #4cc9f0;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 201, 240, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0); }
+        }
+
+        /* Tabla de Productos NASA */
+        .table-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 14px;
+            font-size: 0.95rem;
+            color: #4cc9f0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            color: #e2e8f0;
+        }
+
+        tr {
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .tag {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .tag-free { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .tag-live { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .tag-3d { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Tarjeta Principal con Animación -->
+        <header class="glass-card">
+            <div class="planet-orbit">
+                <div class="orbit-ring"></div>
+            </div>
+            <span class="badge">Conexión NASA Activa</span>
+            <h1>ÓRBITA SONORA</h1>
+            <p class="subtitle">Exploración espacial, sonido planetario e imágenes de la Tierra en tiempo real.</p>
+        </header>
+
+        <!-- Seccion con Tabla de Productos de la NASA -->
+        <main class="glass-card">
+            <h2 class="table-title">🚀 Recursos & Productos Abiertos de la NASA</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto / API</th>
+                            <th>Tipo de Recurso</th>
+                            <th>Descripción</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>NASA APOD</strong></td>
+                            <td>Imagen Diaria</td>
+                            <td>Fotografía astronómica destacada cada 24 hrs con explicación profesional.</td>
+                            <td><span class="tag tag-free">Acceso Libre</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>EPIC (DSCOVR)</strong></td>
+                            <td>Imágenes Tierra</td>
+                            <td>Fotografías a color en tiempo real del planeta Tierra desde el punto L1.</td>
+                            <td><span class="tag tag-live">Tiempo Real</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Eyes on the Earth</strong></td>
+                            <td>Visualización 3D</td>
+                            <td>Simulación interactiva de satélites monitoreando signos vitales terrestres.</td>
+                            <td><span class="tag tag-3d">Interactivo 3D</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sounds of Space</strong></td>
+                            <td>Audio / Archivos</td>
+                            <td>Grabaciones de ondas sonoras procesadas de planetas y emisiones de plasma.</td>
+                            <td><span class="tag tag-free">Descargable</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <p>© Órbita Sonora | Datos e Imágenes cortesa de NASA Open APIs & Unsplash Space</p>
+        </footer>
+    </div>
+
+</body>
+</html>
